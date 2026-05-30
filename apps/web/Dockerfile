@@ -1,6 +1,6 @@
 # syntax=docker.io/docker/dockerfile:1
 
-FROM node:24-alpine AS base
+FROM node:22-alpine AS base
 RUN corepack enable
 
 FROM base AS builder
@@ -37,3 +37,4 @@ USER nextjs
 EXPOSE 3000
 
 CMD HOSTNAME="0.0.0.0" node apps/web/server.js
+
