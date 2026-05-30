@@ -3,9 +3,8 @@ name: cap
 services:
   cap-web:
     container_name: cap-web
-    build:
-      context: .
-      dockerfile: apps/web/Dockerfile
+    image: cap-web:node22
+    pull_policy: never
     restart: unless-stopped
     depends_on:
       mysql:
