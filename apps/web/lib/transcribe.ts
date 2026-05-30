@@ -115,6 +115,14 @@ export async function transcribeVideo(
 			`[transcribeVideo] Triggering transcription workflow for video ${videoId}`,
 		);
 
+		// self-host fix (PR #1832): mark PROCESSING synchronously BEFORE start()
+		// so the 2s status-poll hits the early-return and never re-fires start(),
+		// avoiding the local-world queue race -> detached ArrayBuffer crash.
+		await db()
+			.update(videos)
+			.set({ transcriptionStatus: "PROCESSING" })
+			.where(eq(videos.id, videoId));
+
 		await start(transcribeVideoWorkflow, [
 			{
 				videoId,
