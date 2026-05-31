@@ -3,8 +3,9 @@ name: cap-transcriber
 services:
   cap-transcriber:
     container_name: cap-transcriber
-    image: cap-transcriber:latest
-    pull_policy: never
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: unless-stopped
     environment:
       MYSQL_HOST: mysql
