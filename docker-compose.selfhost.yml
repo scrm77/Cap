@@ -6,6 +6,8 @@ services:
     image: cap-web:patched
     pull_policy: never
     restart: unless-stopped
+    labels:
+      - "traefik.docker.network=gsf4cbqw7uwsb57989r9cs9v"
     depends_on:
       mysql:
         condition: service_healthy
@@ -85,6 +87,8 @@ services:
 
   minio:
     container_name: cap-minio
+    labels:
+      - "traefik.docker.network=gsf4cbqw7uwsb57989r9cs9v"
     image: minio/minio:latest
     restart: unless-stopped
     command: server /data --console-address ":9001"
