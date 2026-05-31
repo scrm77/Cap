@@ -50,7 +50,7 @@ services:
       PORT: 3456
       MEDIA_SERVER_WEBHOOK_SECRET: ${MEDIA_SERVER_WEBHOOK_SECRET:-fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210}
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3456/health"]
+      test: ["CMD", "bun", "-e", "fetch('http://localhost:3456/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -107,6 +107,7 @@ services:
 
   minio-setup:
     container_name: cap-minio-setup
+    restart: "no"
     image: minio/mc:latest
     depends_on:
       minio:
