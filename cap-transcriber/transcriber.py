@@ -108,7 +108,8 @@ def tick():
     s3 = get_s3()
     cands = fetch_candidates(db)
     if not cands:
-        log.info("no candidates"); return
+        log.debug("no candidates")  # тихо: не засоряем лог пустыми тиками
+        return
     log.info("candidates: %d", len(cands))
     for v in cands:
         vid, owner = v["id"], v["ownerId"]
