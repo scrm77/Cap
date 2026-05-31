@@ -1,0 +1,32 @@
+name: cap-transcriber
+
+services:
+  cap-transcriber:
+    container_name: cap-transcriber
+    image: cap-transcriber:latest
+    pull_policy: never
+    restart: unless-stopped
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: "3306"
+      MYSQL_USER: cap
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DB: cap
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-capadmin}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      MINIO_BUCKET: cap
+      DEEPGRAM_API_KEY: ${DEEPGRAM_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ENABLE_SUMMARY: ${ENABLE_SUMMARY:-true}
+      POLL_INTERVAL: ${POLL_INTERVAL:-60}
+      STUCK_MINUTES: ${STUCK_MINUTES:-10}
+      DRY_RUN: ${DRY_RUN:-false}
+    networks:
+      - cap-net
+
+# подключаемся к уже существующей сети стека Cap (там доступны mysql и minio)
+networks:
+  cap-net:
+    external: true
+    name: gsf4cbqw7uwsb57989r9cs9v_cap-network
